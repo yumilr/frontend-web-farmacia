@@ -1,0 +1,49 @@
+.cart-page {
+  padding: 2rem;
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+
+      img {
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+      }
+
+      input {
+        width: 50px;
+      }
+
+      button {
+        background-color: transparent;
+        border: none;
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .resumen {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    button {
+      background-color: #00A859;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      margin-left: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  }
+}
