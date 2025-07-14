@@ -1,23 +1,40 @@
-.product-card {
-  border: 1px solid #ddd;
-  padding: 1rem;
-  text-align: center;
+.card {
+  display: flex;
+  flex-direction: column; /* Apila los elementos verticalmente */
+  border: 1px solid #eee;
   border-radius: 8px;
-  background: #fff;
+  padding: 16px;
+  height: 100%; /* Asegura que todas las tarjetas ocupen la misma altura en la fila */
+}
+
+.card-image-container {
+  width: 100%;
+  aspect-ratio: 1 / 1; /* Mantiene una proporción cuadrada para la imagen */
+  margin-bottom: 12px;
 
   img {
-    width: 100px;
-    height: 100px;
-    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Ajusta la imagen sin cortarla */
+  }
+}
+
+.card-content {
+  flex-grow: 1; /* ¡ESTA ES LA CLAVE! Hace que esta sección crezca y ocupe el espacio disponible, empujando el precio hacia abajo. */
+  
+  h3 {
+    font-size: 1rem;
+    margin-bottom: 8px;
   }
 
-  button {
-    background-color: #00A859;
-    color: white;
-    padding: 0.4rem 1rem;
-    border: none;
-    margin-top: 0.5rem;
-    cursor: pointer;
-    border-radius: 4px;
+  p {
+    font-size: 0.875rem;
+    color: #666;
   }
+}
+
+.card-price {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-top: auto; /* Empuja el precio hacia la parte inferior del contenedor flex */
 }
