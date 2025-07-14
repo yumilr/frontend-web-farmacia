@@ -30,6 +30,24 @@ export const AuthProvider = ({ children }) => {
     setLoading(false); // ✅ Marca como terminado
   }, []);
 
+  const register = async (userData) => {
+    try {
+      await api.post('/usuarios/crear', { 
+        tenant_id: tenantId,
+        user_id: userData.email,
+        password: userData.password,
+        nombre: userData.nombre,
+      });
+
+      return { success: true };
+    } catch (err) {
+      return {
+        success: false,
+        message: err.response?.data?.message || 'Error al crear la cuenta',
+      };
+    }
+  };
+
   const login = async (email, password) => {
     try {
       const res = await api.post('/usuarios/login', {
@@ -62,7 +80,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, logout, register, loading }}>
       {children}
     </AuthContext.Provider>
   );
