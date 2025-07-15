@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useTenant } from '../contexts/TenantContext';
 import productosApi from '../services/productosApi';
 import './SearchBox.scss';
-import mockProducts from '../services/mockProducts';
 
 const SearchBox = () => {
   const [query, setQuery] = useState('');
