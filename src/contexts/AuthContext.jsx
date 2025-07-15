@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import api from '../services/api';
+import api from '../services/usuariosApi';
 import { useTenant } from './TenantContext';
 
 const AuthContext = createContext();
@@ -56,14 +56,28 @@ export const AuthProvider = ({ children }) => {
         password
       });
 
-      const { user, token } = res.data;
+      // 👇 --- INICIO DE LA CORRECCIÓN --- 👇
 
-      setUser(user);
-      localStorage.setItem('user', JSON.stringify(user));
+      // 1. El 'body' es un string, lo convertimos a un objeto JSON
+      const responseBody = JSON.parse(res.data.body);
+
+      // 2. Ahora sí podemos extraer el token desde el body parseado
+      const { token } = responseBody;
+
+      // 3. Como la API no devuelve 'user', creamos un objeto básico nosotros
+      const userData = { email: email }; 
+      setUser(userData);
+      localStorage.setItem('user', JSON.stringify(userData));
+
+      // 4. Guardamos el token y lo configuramos en la cabecera
       localStorage.setItem('token', token);
+      console.log('✅ LOGIN: Token guardado en localStorage:', token);
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
+      // 👆 --- FIN DE LA CORRECCIÓN --- 👆
+
       return { success: true };
+      
     } catch (err) {
       return {
         success: false,
