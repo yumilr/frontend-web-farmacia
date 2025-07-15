@@ -71,6 +71,7 @@ export const AuthProvider = ({ children }) => {
 
       // 4. Guardamos el token y lo configuramos en la cabecera
       localStorage.setItem('token', token);
+      console.log('✅ LOGIN: Token guardado en localStorage:', token);
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       // 👆 --- FIN DE LA CORRECCIÓN --- 👆

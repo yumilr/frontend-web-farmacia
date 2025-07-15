@@ -15,6 +15,8 @@ productosApi.interceptors.request.use(
     // 1. Obtiene el token del localStorage
     const token = localStorage.getItem('token');
 
+    console.log('➡️ INTERCEPTOR: Enviando petición a', config.url, 'con token:', token);
+
     // 2. Si el token existe, lo añade a la cabecera 'Authorization'
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;

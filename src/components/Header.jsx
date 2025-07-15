@@ -14,7 +14,7 @@ const Header = () => {
 
   return (
     <header className="header">
-      <Link to="/" className="logo">
+      <Link to="/productos" className="logo">
         <Logo className="logo-icon" />
       </Link>
 

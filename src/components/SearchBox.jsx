@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useTenant } from '../contexts/TenantContext';
+import productosApi from '../services/productosApi';
 import './SearchBox.scss';
 import mockProducts from '../services/mockProducts';
 
@@ -9,22 +11,39 @@ const SearchBox = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const searchRef = useRef(null);
 
+  const { tenantId } = useTenant();
   const navigate = useNavigate();
   const location = useLocation();
   const hiddenRoutes = ['/login', '/register'];
 
   useEffect(() => {
-    if (query.length < 2) {
+    if (query.length < 2 || !tenantId) {
       setSuggestions([]);
       return;
     }
 
-    const filtered = mockProducts.filter(p =>
-      p.nombre.toLowerCase().includes(query.toLowerCase())
-    );
+    // Temporizador para esperar 300ms después de la última tecla
+    const debounceTimer = setTimeout(() => {
+      const fetchSuggestions = async () => {
+        try {
+          const requestBody = {
+            tenant_id: tenantId,
+            search: query,
+          };
+          const res = await productosApi.post('/productos/listar', requestBody);
+          setSuggestions(res.data.items || []);
+        } catch (error) {
+          console.error("Error fetching suggestions:", error);
+          setSuggestions([]); 
+        }
+      };
 
-    setSuggestions(filtered);
-  }, [query]);
+      fetchSuggestions();
+    }, 300);
+
+    // Limpia el temporizador si el usuario sigue tecleando
+    return () => clearTimeout(debounceTimer);
+  }, [query, tenantId]);
 
   const handleSelect = (producto) => {
     navigate(`/productos?search=${encodeURIComponent(producto.nombre)}`);
@@ -70,11 +89,15 @@ const SearchBox = () => {
         />
       </form>
 
-      {suggestions.length > 0 && (
+      {showSuggestions && suggestions.length > 0 && (
         <ul className="suggestions">
           {suggestions.map(prod => (
-            <li key={prod.id} className="suggestion-item"     onClick={() => handleSelect(prod)}>
-              <img src={prod.imagen} alt={prod.nombre} className="suggestion-image" />
+            <li key={prod.producto_id} className="suggestion-item"     onClick={() => handleSelect(prod)}>
+              <img 
+                src={prod.image_url || `${process.env.REACT_APP_S3_BUCKET_URL}/${prod.producto_id}.png`}
+                alt={prod.nombre} 
+                className="suggestion-image" 
+              />
               <span className="suggestion-text">{prod.nombre}</span>
             </li>
           ))}

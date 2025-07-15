@@ -20,30 +20,52 @@ const ProductListPage = () => {
   const [loading, setLoading] = useState(true); // 👈 3. Añade estado de carga
   const [error, setError] = useState(null);     // 👈 4. Añade estado de error
 
+  const handleDelete = async (productoId) => {
+    // Pide confirmación al usuario
+    if (!window.confirm('¿Estás seguro de que quieres eliminar este producto?')) {
+      return;
+    }
+    try {
+      const requestBody = {
+        tenant_id: tenantId,
+        producto_id: productoId
+      };
+      console.log("Enviando para eliminar:", requestBody);
+      await api.delete('/productos/eliminar', { 
+        data: requestBody 
+      });
+      setProductos(prev => prev.filter(p => p.producto_id !== productoId));
+  } catch (err) {
+      console.error("Error al eliminar el producto:", err);
+      alert("No se pudo eliminar el producto.");
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true); // Inicia la carga
       setError(null);
 
       try {
-        // Objeto para pasar los parámetros de búsqueda a la API
         const requestBody = {
-          tenant_id: tenantId, // Usa el tenantId del contexto
-          search: searchQuery || undefined, // Envía los filtros si existen
+          tenant_id: tenantId,
+          search: searchQuery || undefined,
           categoria: categoriaSeleccionada || undefined,
         };
 
-        // 👇 La llamada a tu backend. Axios se encarga de añadir los params a la URL
         const res = await api.post('/productos/listar', requestBody);
         const bucketUrl = process.env.REACT_APP_S3_BUCKET_URL;
-        const productosConImagen = (res.data.items || []).map(producto => ({
+        let productosDesdeApi = (res.data.items || []).map(producto => ({
           ...producto,
-          // Construimos la URL completa de la imagen en S3
-          // Asumimos que todas las imágenes son .jpg, ajústalo si es necesario
-          imageUrl: `${bucketUrl}/${producto.producto_id}.png`,
+          imageUrl: producto.image_url || `${bucketUrl}/${producto.producto_id}.png`,
         }));
 
-        setProductos(productosConImagen);
+        if (categoriaSeleccionada) {
+          productosDesdeApi = productosDesdeApi.filter(
+            producto => producto.category === categoriaSeleccionada
+          );
+        }
+        setProductos(productosDesdeApi);
 
       } catch (err) {
         console.error("Error fetching products:", err);
@@ -85,7 +107,11 @@ const ProductListPage = () => {
       ) : (
         <div className="grid">
           {productos.map((prod) => (
-            <ProductCard key={prod.producto_id} product={prod} />
+            <ProductCard
+              key={prod.producto_id} 
+              product={prod} 
+              onDelete={handleDelete} 
+            />
           ))}
         </div>
       )}
