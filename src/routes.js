@@ -8,6 +8,7 @@ import ProductListPage from './pages/ProductListPage';
 import CartPage from './pages/CartPage';
 import EditProductPage from './pages/EditProductPage';
 import CreateProductPage from './pages/CreateProductPage';
+import PurchaseHistoryPage from './pages/PurchaseHistoryPage';
 
 
 
@@ -20,6 +21,7 @@ const AppRoutes = () => (
     <Route path="/cart" element={<CartPage />} />
     <Route path="/productos/editar" element={<EditProductPage />} />
     <Route path="/productos/crear" element={<CreateProductPage />} />
+    <Route path="/mis-compras" element={<PurchaseHistoryPage />} />
   </Routes>
 );
 

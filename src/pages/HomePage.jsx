@@ -41,11 +41,9 @@ const HomePage = () => {
         // Hacemos una llamada general para obtener los productos
         const res = await api.post('/productos/listar', { tenant_id: tenantId });
         
-        const bucketUrl = process.env.REACT_APP_S3_BUCKET_URL;
-
         const productosProcesados = (res.data.items || []).map(producto => ({
           ...producto,
-          imageUrl: producto.image_url || `${bucketUrl}/${producto.producto_id}.png`,
+          imageUrl: producto.image_url,
         }));
 
         // Seleccionamos solo los primeros 4 como destacados
