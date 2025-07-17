@@ -54,10 +54,9 @@ const ProductListPage = () => {
         };
 
         const res = await api.post('/productos/listar', requestBody);
-        const bucketUrl = process.env.REACT_APP_S3_BUCKET_URL;
         let productosDesdeApi = (res.data.items || []).map(producto => ({
           ...producto,
-          imageUrl: producto.image_url || `${bucketUrl}/${producto.producto_id}.png`,
+          imageUrl: producto.image_url,
         }));
 
         if (categoriaSeleccionada) {

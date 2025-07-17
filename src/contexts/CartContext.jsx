@@ -9,7 +9,13 @@ export const CartProvider = ({ children }) => {
 
   const addToCart = (product) => {
     setCartItems((prev) => {
-      const existing = prev.find(item => item.id === product.id);
+      const existing = prev.find(item => item.producto_id === product.producto_id);
+      const currentQuantity = existing ? existing.cantidad : 0;
+
+      if (currentQuantity >= product.stock) {
+        alert(`No puedes agregar más ${product.nombre}, solo quedan ${product.stock} en stock.`);
+        return prev;
+      }
       if (existing) {
         return prev.map(item =>
           item.id === product.id

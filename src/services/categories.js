@@ -3,5 +3,5 @@ export const categoryData = {
   'Salud': ['Suplementos', 'Vitaminas', 'Control de peso'],
   'Mamá y Bebé': ['Pañales', 'Leches infantiles', 'Cuidado del bebé'],
   'Dermocosmética': ['Cuidado facial', 'Protección solar', 'Antiedad'],
-  'Higiene': ['Jabones', 'Desodorantes', 'Cuidado íntimo'],
+  'Higiene': ['Jabones', 'Desodorantes', 'Cuidado íntimo', 'Detergentes'],
 };

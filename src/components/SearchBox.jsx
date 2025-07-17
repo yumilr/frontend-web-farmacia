@@ -93,7 +93,7 @@ const SearchBox = () => {
           {suggestions.map(prod => (
             <li key={prod.producto_id} className="suggestion-item"     onClick={() => handleSelect(prod)}>
               <img 
-                src={prod.image_url || `${process.env.REACT_APP_S3_BUCKET_URL}/${prod.producto_id}.png`}
+                src={prod.image_url}
                 alt={prod.nombre} 
                 className="suggestion-image" 
               />

@@ -24,13 +24,14 @@ const Header = () => {
         {user ? (
           <>
             <span>Hola, {user.nombre}</span>
-            <button onClick={logout}>Salir</button>
+            {/* 👇 AÑADE ESTE ENLACE AQUÍ */}
+            <Link to="/mis-compras" className="header-link">Mis Compras</Link>
+            <button onClick={logout} className="logout-btn">Salir</button>
           </>
         ) : (
           <Link to="/login">Ingresar</Link>
         )}
 
-        {/* 👇 Solo mostramos el carrito si no estamos en login/register */}
         {!shouldHideCart && (
           <Link to="/cart" className="cart">🛒 Carrito</Link>
         )}
