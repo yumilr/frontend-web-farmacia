@@ -6,7 +6,7 @@ import './CartPage.scss';
 const CartPage = () => {
   const { cartItems, updateQuantity, removeFromCart, clearCart } = useCart();
 
-  const total = cartItems.reduce((sum, item) => sum + item.price * item.stock, 0);
+  const total = cartItems.reduce((sum, item) => sum + item.price * item.cantidad, 0);
 
   const handleFinalizarCompra = async () => {
     if (cartItems.length === 0) {
@@ -18,7 +18,7 @@ const CartPage = () => {
       codigo: item.producto_id,
       nombre: item.nombre,
       precio: item.price,
-      cantidad: item.stock,
+      cantidad: item.cantidad,
       imageUrl: item.image_url
     }));
 
@@ -58,7 +58,7 @@ const CartPage = () => {
                 <span>{item.nombre}</span>
                 <input
                   type="number"
-                  value={item.stock}
+                  value={item.cantidad}
                   min="1"
                   onChange={(e) => updateQuantity(item.id, parseInt(e.target.value))}
                 />
